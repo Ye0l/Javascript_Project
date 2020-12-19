@@ -92,6 +92,16 @@
             $('#price_selector').click(click);
             $('.telBtn').click(btnClick);
             $('#save').click(saveMileage);
+            if(JSON.parse(localStorage.getItem('mileageData')) !== null) {
+                mileage = JSON.parse(localStorage.getItem('mileageData'));
+            }
+        });
+        // ========================================================================
+        // 페이지 종료 시 실행
+        // ========================================================================
+        $(window).on('beforeunload',function() {
+            localStorage.setItem('mileageData', JSON.stringify(mileage));
+            alert("종료합니다.");
         });
         // ========================================================================
     </script>
