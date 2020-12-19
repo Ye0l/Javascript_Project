@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        #system {
-            display: none;
-        }
-    </style>
     <script src="./jquery-3.5.1.min.js"></script>
     <script>
+        let telData = "";
+        let mileage = {};
+        let rndprice;
         // ========================================================================
         // 구입 금액 입력부
         // ========================================================================
@@ -35,8 +33,8 @@
         // 버튼 액션 처리부
         // ========================================================================
         function btnClick() {
-            let telNumber = $('#telBoxBack').text();
-            let e = $(this).text()
+            let telNumber = telData;
+            var e = $(this).text()
             switch(e) {
                 case `C`:
                     telNumber = "";
@@ -50,15 +48,14 @@
                     telNumber = telNumber + $(this).text();
                     break;
             }
-            $('#telBoxBack').text(telNumber);
+            telData = telNumber;
             telBoxAutoHyphen(telNumber);
         }
         // ========================================================================
         // 텍스트박스 - 넣기
         // ========================================================================
         function telBoxAutoHyphen(telNumber) {
-            let e = telNumber.length;
-            console.log(e);
+            var e = telNumber.length;
             if(e > 3) {
                 if(e > 6 && e < 11) {
                     telNumber = `${telNumber.substr(0,3)}-${telNumber.substr(3,3)}-${telNumber.substr(6,e-6)}`
@@ -71,12 +68,30 @@
             $('#telBoxFront').val(telNumber);
         }
         // ========================================================================
+        // 마일리지 정보 저장
+        // ========================================================================
+        function saveMileage() {
+            if(telData.length < 10) {
+                alert("전화번호를 입력해주세요.");
+                return;
+            }
+            let today = new Date();
+            nowtime = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}_${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+            try {
+                mileage[telData][nowtime] = rndprice;
+            } catch (error) {
+                mileage[telData] = {};
+                mileage[telData][nowtime] = rndprice;
+            }
+        }
+        // ========================================================================
         // 페이지 로딩 후 실행
         // ========================================================================
         $(document).ready(function() {
             click();
             $('#price_selector').click(click);
             $('.telBtn').click(btnClick);
+            $('#save').click(saveMileage);
         });
         // ========================================================================
     </script>
@@ -107,10 +122,8 @@
         <button class='telBtn'>9</button><br>
         <button class='telBtn'>X</button> <!-- Backspace -->
         <button class='telBtn'>0</button>
-        <button class='telBtn'>C</button> <!-- reset -->
-    </div>
-    <div id='system'>
-        <p id='telBoxBack'></p>
+        <button class='telBtn'>C</button> <!-- reset --><br>
+        <button id='save'>적립</button>
     </div>
 </body>
 </html>
