@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #system {
+            display: none;
+        }
+    </style>
     <script src="./jquery-3.5.1.min.js"></script>
     <script>
         // ========================================================================
@@ -30,9 +35,8 @@
         // 버튼 액션 처리부
         // ========================================================================
         function btnClick() {
-            let telNumber = $('#telBox').val();
-            if(telNumber.length >= 13)
-                return;
+            let telNumber = $('#telBox').text();
+            console.log($('#telBox').text().length);
             let e = $(this).text()
             switch(e) {
                 case `C`:
@@ -42,10 +46,13 @@
                     telNumber = telNumber.substring(0,telNumber.length-1);
                     break;
                 default:
+                    if(telNumber.length >= 11)
+                        return;
                     telNumber = telNumber + $(this).text();
                     break;
             }
-            $('#telBox').val(telNumber);
+            $('#telBox').text(telNumber);
+            telBoxAutoHyphen();
         }
         // ========================================================================
         // 텍스트박스 - 넣기
@@ -76,9 +83,9 @@
 <body>
     <div id='container'>
         <button id=price_selector>금액 설정</button>
-        <input type="text" id="price"><br>
+        <input type="text" id="price" disabled><br>
         Phone: <br>
-        <input type="text" id='telBox' disabled><br>
+        <input type="text" id='telBox_Front' disabled><br>
         <button class='telBtn'>1</button>
         <button class='telBtn'>2</button>
         <button class='telBtn'>3</button><br>
@@ -91,6 +98,10 @@
         <button class='telBtn'>X</button> <!-- Backspace -->
         <button class='telBtn'>0</button>
         <button class='telBtn'>C</button> <!-- reset -->
+    </div>
+    <div id='system'>
+        <p id='telBox'>
+        </p>
     </div>
 </body>
 </html>
