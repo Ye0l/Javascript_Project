@@ -35,15 +35,14 @@
         // 버튼 액션 처리부
         // ========================================================================
         function btnClick() {
-            let telNumber = $('#telBox').text();
-            console.log($('#telBox').text().length);
+            let telNumber = $('#telBoxBack').text();
             let e = $(this).text()
             switch(e) {
                 case `C`:
                     telNumber = "";
                     break;
                 case `X`:
-                    telNumber = telNumber.substring(0,telNumber.length-1);
+                    telNumber = telNumber.substr(0,telNumber.length-1);
                     break;
                 default:
                     if(telNumber.length >= 11)
@@ -51,14 +50,25 @@
                     telNumber = telNumber + $(this).text();
                     break;
             }
-            $('#telBox').text(telNumber);
-            telBoxAutoHyphen();
+            $('#telBoxBack').text(telNumber);
+            telBoxAutoHyphen(telNumber);
         }
         // ========================================================================
         // 텍스트박스 - 넣기
         // ========================================================================
-        function telBoxAutoHyphen() {
-            
+        function telBoxAutoHyphen(telNumber) {
+            let e = telNumber.length;
+            console.log(e);
+            if(e > 3) {
+                if(e > 6 && e < 11) {
+                    telNumber = `${telNumber.substr(0,3)}-${telNumber.substr(3,3)}-${telNumber.substr(6,e-6)}`
+                } else if(e == 11) {
+                    telNumber = `${telNumber.substr(0,3)}-${telNumber.substr(3,4)}-${telNumber.substr(7,4)}`
+                } else {
+                    telNumber = `${telNumber.substr(0,3)}-${telNumber.substr(3,e-3)}`
+                }
+            }
+            $('#telBoxFront').val(telNumber);
         }
         // ========================================================================
         // 페이지 로딩 후 실행
@@ -85,7 +95,7 @@
         <button id=price_selector>금액 설정</button>
         <input type="text" id="price" disabled><br>
         Phone: <br>
-        <input type="text" id='telBox_Front' disabled><br>
+        <input type="text" id='telBoxFront' disabled><br>
         <button class='telBtn'>1</button>
         <button class='telBtn'>2</button>
         <button class='telBtn'>3</button><br>
@@ -100,8 +110,7 @@
         <button class='telBtn'>C</button> <!-- reset -->
     </div>
     <div id='system'>
-        <p id='telBox'>
-        </p>
+        <p id='telBoxBack'></p>
     </div>
 </body>
 </html>
