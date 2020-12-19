@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./jquery-3.5.1.min.js"></script>
     <script>
+        // ========================================================================
+        // 구입 금액 입력부
+        // ========================================================================
         function rndPrice(min, max, interval) {
             rnd = Math.random();
             // 수학도의 힘을 빌린 정말 균일한 난수값 추출식
@@ -16,17 +19,49 @@
                     strprice = "," + strprice;
             }
             $('#price').val(strprice);
-            console.log(rndprice);
         }
         function click() {
-            rndPrice(13,25,3);
+            min = 1000;
+            max = 100000;
+            interval = 1000;
+            rndPrice(min,max,interval);
         }
-        $(document).ready(function() {
-            for(var i=0; i<9999; i++) {
-                click();
+        // ========================================================================
+        // 버튼 액션 처리부
+        // ========================================================================
+        function btnClick() {
+            let telNumber = $('#telBox').val();
+            if(telNumber.length >= 13)
+                return;
+            let e = $(this).text()
+            switch(e) {
+                case `C`:
+                    telNumber = "";
+                    break;
+                case `X`:
+                    telNumber = telNumber.substring(0,telNumber.length-1);
+                    break;
+                default:
+                    telNumber = telNumber + $(this).text();
+                    break;
             }
+            $('#telBox').val(telNumber);
+        }
+        // ========================================================================
+        // 텍스트박스 - 넣기
+        // ========================================================================
+        function telBoxAutoHyphen() {
+            
+        }
+        // ========================================================================
+        // 페이지 로딩 후 실행
+        // ========================================================================
+        $(document).ready(function() {
+            click();
             $('#price_selector').click(click);
+            $('.telBtn').click(btnClick);
         });
+        // ========================================================================
     </script>
     <style>
         body {
@@ -40,21 +75,22 @@
 </head>
 <body>
     <div id='container'>
-        <input type="text" id='price'><br>
-        <button id=price_selector>금액 설정</button><br>
-        <input type="text"><br>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button><br>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button><br>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button><br>
-        <button>X</button> <!-- Backspace -->
-        <button>0</button>
-        <button>C</button> <!-- reset -->
+        <button id=price_selector>금액 설정</button>
+        <input type="text" id="price"><br>
+        Phone: <br>
+        <input type="text" id='telBox' disabled><br>
+        <button class='telBtn'>1</button>
+        <button class='telBtn'>2</button>
+        <button class='telBtn'>3</button><br>
+        <button class='telBtn'>4</button>
+        <button class='telBtn'>5</button>
+        <button class='telBtn'>6</button><br>
+        <button class='telBtn'>7</button>
+        <button class='telBtn'>8</button>
+        <button class='telBtn'>9</button><br>
+        <button class='telBtn'>X</button> <!-- Backspace -->
+        <button class='telBtn'>0</button>
+        <button class='telBtn'>C</button> <!-- reset -->
     </div>
 </body>
 </html>
