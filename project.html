@@ -9,6 +9,18 @@
         let mileage = {};
         let rndprice;
         // ========================================================================
+        // 금액 쉼표넣는 함수
+        // ========================================================================
+        function insertComma(value) {
+            var output = "";
+            for(var i=1;i <= String(value).length; i++) {
+                output = String(value)[String(value).length-i] + output;
+                if(Number.isInteger(i/3))
+                    output = "," + output;
+            }
+            return output;
+        }
+        // ========================================================================
         // 구입 금액 입력부
         // ========================================================================
         function rndPrice(min, max, interval) {
@@ -16,11 +28,7 @@
             // 수학도의 힘을 빌린 정말 균일한 난수값 추출식
             rndprice = Math.floor(rnd*(max-min+interval)/interval)*interval+min;
             let strprice = "원";
-            for(var i=1;i <= String(rndprice).length; i++) {
-                strprice = String(rndprice)[String(rndprice).length-i] + strprice;
-                if(i/3 == 1)
-                    strprice = "," + strprice;
-            }
+            strprice = insertComma(rndprice) + "원";
             $('#price').val(strprice);
         }
         function click() {
@@ -83,6 +91,16 @@
                 mileage[telData] = {};
                 mileage[telData][nowtime] = rndprice;
             }
+            var count = 0;
+            var money = 0;
+            for(i in mileage[telData]) {
+                money += mileage[telData][i];
+                count += 1;
+            }
+            money = insertComma(money);
+            $('#mileageCount').text(count);
+            $('#mileageMoney').text(money);
+            $('#message').css('display', 'block');
         }
         // ========================================================================
         // 페이지 로딩 후 실행
@@ -95,13 +113,15 @@
             if(JSON.parse(localStorage.getItem('mileageData')) !== null) {
                 mileage = JSON.parse(localStorage.getItem('mileageData'));
             }
+            $('#message').click(function() {
+                $('#message').css("display", "none");
+            });
         });
         // ========================================================================
         // 페이지 종료 시 실행
         // ========================================================================
         $(window).on('beforeunload',function() {
             localStorage.setItem('mileageData', JSON.stringify(mileage));
-            alert("종료합니다.");
         });
         // ========================================================================
     </script>
@@ -111,6 +131,17 @@
         #container {
             border: 1px solid blue;
             position: absolute;
+        }
+        #message {
+            background-color: white;
+            border: 1px solid red;
+            position: absolute;
+            display: none;
+            text-align: center;
+        }
+        #msg {
+            width: 70%;
+            height: 70%;
         }
     </style>
     <title>Mileage Management</title>
@@ -134,6 +165,13 @@
         <button class='telBtn'>0</button>
         <button class='telBtn'>C</button> <!-- reset --><br>
         <button id='save'>적립</button>
+    </div>
+    <div id='message'>
+        <span id="msg">
+        <span>적립되었습니다.</span><br>
+        <span>총 적립 횟수: </span><span id="mileageCount">0</span><span>회</span><br>
+        <span>총 적립 금액: </span><span id="mileageMoney">0</span><span>원</span>
+        </span>
     </div>
 </body>
 </html>
