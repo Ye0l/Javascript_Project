@@ -45,6 +45,9 @@
             var e = $(this).text()
             switch(e) {
                 case `C`:
+                    if(telData == '0000') {
+                        alert("관리자 기능");
+                    }
                     telNumber = "";
                     break;
                 case `X`:
@@ -57,7 +60,7 @@
                     break;
             }
             telData = telNumber;
-            telBoxAutoHyphen(telNumber);
+            $('#telBoxFront').val(telBoxAutoHyphen(telNumber));
         }
         // ========================================================================
         // 텍스트박스 - 넣기
@@ -73,7 +76,7 @@
                     telNumber = `${telNumber.substr(0,3)}-${telNumber.substr(3,e-3)}`
                 }
             }
-            $('#telBoxFront').val(telNumber);
+            return telNumber;
         }
         // ========================================================================
         // 마일리지 정보 저장
@@ -103,6 +106,23 @@
             $('#message').css('display', 'block');
         }
         // ========================================================================
+        // 관리자 페이지 리사이징
+        // ========================================================================
+        function admin_resize() {
+            $('#admin_menu').css('height',`${$('#admin').height()-$('#admin_titlebar').height()}`);
+            $('#admin_main').css('height',`${$('#admin').height()-$('#admin_titlebar').height()}`);
+        }
+        // ========================================================================
+        // 적립번호 메뉴
+        // ========================================================================
+        function showtelnum() {
+            var output = "";
+            for(i in mileage) {
+                output = output + `<p>${telBoxAutoHyphen(i)}</p>`;
+            }
+            $('#main_telnum').html(output);
+        }
+        // ========================================================================
         // 페이지 로딩 후 실행
         // ========================================================================
         $(document).ready(function() {
@@ -116,6 +136,11 @@
             $('#message').click(function() {
                 $('#message').css("display", "none");
             });
+            $('#mitem_showtelnum').click(showtelnum);
+            admin_resize();
+            $(window).resize(function() {
+                admin_resize();
+            });
         });
         // ========================================================================
         // 페이지 종료 시 실행
@@ -127,6 +152,9 @@
     </script>
     <style>
         body {
+            margin: 0px;
+            width: 100%;
+            height: 100%;
         }
         #container {
             border: 1px solid blue;
@@ -142,6 +170,30 @@
         #msg {
             width: 70%;
             height: 70%;
+        }
+        #admin {
+            position: absolute;
+            background-color: white;;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            /* display: none; */
+        }
+        #admin_titlebar {
+            margin: 0px;
+            background-color: gray;
+            text-align: center;
+        }
+        #admin_menu {
+            width: 30%;
+            background-color: lightcoral;
+            float: left;
+        }
+        #admin_main {
+            width: 70%;
+            background-color: lightgreen;
+            float: right;
         }
     </style>
     <title>Mileage Management</title>
@@ -172,6 +224,18 @@
         <span>총 적립 횟수: </span><span id="mileageCount">0</span><span>회</span><br>
         <span>총 적립 금액: </span><span id="mileageMoney">0</span><span>원</span>
         </span>
+    </div>
+    <div id="admin">
+        <div id="admin_titlebar">Administrator option</div>
+        <div id="admin_menu">
+            <p id="mitem_showtelnum">적립 중인 번호</p>
+            <p>메뉴2</p>
+        </div>
+        <div id="admin_main">
+            <div id="main_telnum">
+                <p></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
