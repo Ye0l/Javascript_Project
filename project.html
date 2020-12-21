@@ -106,17 +106,18 @@
             $('#mileageCount').text(count);
             $('#mileageMoney').text(money);
             $('#message').css('display', 'block');
+            $('#message').animate({opacity: '1.0'});
         }
         // ========================================================================
         // 관리자 페이지 리사이징
         // ========================================================================
-        function admin_resize() {
-            var admin_height = $(document).height()*0.8;
-            var admin_width = $(document).width()*0.8;
-            $('#admin').css('top', ($(document).height()-admin_height)*0.5);
-            $('#admin').css('left', ($(document).width()-admin_width)*0.5);
-            $('#admin').css('height', admin_height);
-            $('#admin').css('width', admin_width);
+        function divresize(div, h, w) {
+            var setheight = $(document).height()*h;
+            var setwidth = $(document).width()*w;
+            $(div).css('top', ($(document).height()-setheight)*0.5);
+            $(div).css('left', ($(document).width()-setwidth)*0.5);
+            $(div).css('height', setheight);
+            $(div).css('width', setwidth);
         }
         // ========================================================================
         // 적립번호 메뉴
@@ -140,6 +141,7 @@
                 mileage = JSON.parse(localStorage.getItem('mileageData'));
             }
             $('#message').click(function() {
+                $('#message').animate({opacity: '0'});
                 $('#message').css("display", "none");
             });
             $('#mitem_showtelnum').click(showtelnum);
@@ -170,7 +172,10 @@
                 $(this).css('background-color', '#a6d0e0');
             })
             // ========================================================================
-            admin_resize();
+            // 사이즈 조절 부
+            // ========================================================================
+            divresize('#admin', 0.8, 0.8);
+            divresize('#message', 0.2, 0.6);
             $(window).resize(function() {
                 admin_resize();
             });
@@ -195,11 +200,13 @@
         @font-face {
             font-family: 'BMHANNAAir';
             src: url(./BMHANNAAir_ttf.ttf) format('truetype');
+            font-family: 'MBK';
+            src: url(./MBKCorpoS.woff);
             }
         * {
             margin: 0;
             padding: 0;
-            font-family: BMHANNAAir;
+            font-family: MBK;
         }
         p {
             color: #38556b;
@@ -265,6 +272,7 @@
             font-size: 30px;
         }
         .telBtn{
+            font-weight: bold;
             font-size: 30px;
             width: 176px;
             height: 12%;
@@ -277,11 +285,15 @@
             height: 10%;
         }
         #message {
-            background-color: white;
-            border: 1px solid red;
+            padding-top: 70px;
+            background-color: rgba(0,0,0,0.6);
+            font-size: 28px;
+            color: white;
             position: absolute;
             display: none;
             text-align: center;
+            box-shadow: 0px 0px 10px 5px gray;
+            opacity: 0;
         }
         #msg {
             width: 70%;
