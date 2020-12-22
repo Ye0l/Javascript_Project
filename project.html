@@ -180,6 +180,9 @@
             });
             divCenter('#container');
         });
+        $('#admin_background').ready(function() {
+            $('#admin').load('admin.html');
+        });
         // ========================================================================
         // 페이지 종료 시 실행
         // ========================================================================
@@ -346,15 +349,6 @@
     </div>
     <div id="admin_background">
         <div id="admin">
-            <div id="admin_menu">
-                <p id="mitem_showtelnum">적립 중인 번호</p>
-                <p>메뉴2</p>
-            </div>
-            <div id="admin_main">
-                <div id="main_contents">
-                    <p></p>
-                </div>
-            </div>
         </div>
     </div>
 </body>
