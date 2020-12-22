@@ -131,8 +131,7 @@
                 mileage = JSON.parse(localStorage.getItem('mileageData'));
             }
             $('#message').click(function() {
-                $('#message').animate({opacity: '0'});
-                $('#message').css("display", "none");
+                $('#message').animate({opacity: '0'}, function(){$('#message').css("display", "none")});
             });
             $('#btnexit').click(function() {
                 $('#admin_background').css('display', 'none');
@@ -253,13 +252,13 @@
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
             font-size: 3em;
-            width: 73%;
+            width: 70%;
             height: 80px;
             line-height: 0;
         }
         #price_selector {
             font-size: 30px;
-            width: 17%;
+            width: 20%;
             height: 80px;
             margin: 0;
             border-top-left-radius: 0px;
