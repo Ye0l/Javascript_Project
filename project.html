@@ -48,7 +48,7 @@
                 case `C`:
                     if(telData == '0000') {
                         $('#admin_background').css('display', 'block');
-                        admin_resize();
+                        divresize('#admin', 0.8, 0.8);
                     }
                     telNumber = "";
                     break;
@@ -159,18 +159,17 @@
             // button 디자인 부
             // ========================================================================
             $('button').mouseover(function() {
-                event.stopPropagation;
-                $(this).css('background-color', 'rgba(214,214,214, 0.8)');
+                $(this).css('background-color', '#a6d0e0');
             });
             $('button').mouseleave(function() {
                 $(this).css('background-color', 'rgb(239,239,239)');
             });
-            $('#save').mouseover(function() {
-                $(this).css('background-color', '#e0f6ff');
-            })
-            $('#save').mouseleave(function() {
+            $('button').mousedown(function() {
+                $(this).css('background-color', '#62a9c7');
+            });
+            $('button').mouseup(function() {
                 $(this).css('background-color', '#a6d0e0');
-            })
+            });
             // ========================================================================
             // 사이즈 조절 부
             // ========================================================================
@@ -233,7 +232,7 @@
         #container {
             border: 3px solid white;
             border-radius: 10px;
-            box-shadow: 0px 0px 15px 2px rgb(48, 69, 100);
+            box-shadow: 0px 0px 15px 2px rgba(48, 69, 100, 0.5);
             position: absolute;
             background-image: url(./img/contatiner.png);
             text-align: center;
@@ -278,8 +277,6 @@
             height: 12%;
         }
         #save{
-            background-color: #a6d0e0;
-            border: #62a9c7 3px solid;
             font-size: 30px;
             width: 534px;
             height: 10%;
