@@ -134,7 +134,13 @@
                 $(this).parent().children().css('background-color', '#a6d0e025');
             });
             $('.user_tel, .user_count').mouseleave(function() {
-                $(this).parent().children().css('background-color', 'white');
+                $(this).parent().children().css('background-color', '');
+            });
+            $('.detailGroup').mouseover(function() {
+                $(this).css('background-color', '#aaaaaa70');
+            });
+            $('.detailGroup').mouseleave(function() {
+                $(this).css('background-color', '');
             });
             $('.user_tel').click(function() {
                 if($(this).parent().children('.user_detail').css('display') == 'inline-block')
@@ -149,11 +155,16 @@
         function loadData() {
             for(tel in mileage) {
                 let userform = $('#user').clone();
-                let form = userform.appendTo('#admin_contents').css('display', 'block')[0].id=tel;
+                userform.appendTo('#admin_contents').css('display', 'block')[0].id=tel;
                 $(`#${tel}`).children('.user_tel').text(tel);
                 let count = 0;
                 for(i in mileage[tel]) {
-                    $(`#${tel}`).children('.user_detail').html('test');
+                    let detailform = $('#detailGroupProto').clone();
+                    detailform.appendTo($(`#${tel}`).children('.user_detail')).css('display', 'block')[0].id=`${tel}-${count}`;
+                    let detail_date = $(`#${tel}`).children('.user_detail').children(`#${tel}-${count}`).children('.detail_date');
+                    let detail_price = $(`#${tel}`).children('.user_detail').children(`#${tel}-${count}`).children('.detail_price');
+                    detail_date.html(detail_date.html() + `${i}<br>`);
+                    detail_price.html(detail_price.html() + `${mileage[tel][i]}<br>`)
                     count++;
                 }
                 $(`#${tel}`).children('.user_count').text(count);
@@ -239,6 +250,9 @@
         // ========================================================================
     </script>
     <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
         @font-face {
             font-family: 'BMHANNAAir';
             src: url(./BMHANNAAir_ttf.ttf) format('truetype');
@@ -407,11 +421,26 @@
         }
         .user_detail {
             display: none;
-            width: 97%;
-            height: 40px;
+            background-color: #f0f0f0;
+            border: 3px solid white;
+            width: 488px;
             border-radius: 10px;
-            padding-top: 10px;
-            margin-top: 10px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .detailGroup {
+            display: none;
+            padding: 3px;
+            margin-bottom: 10px;
+        }
+        .detail_date {
+            display: inline-block;
+            width: 40%;
+            margin-right: 10px;
+        }
+        .detail_price {
+            display: inline-block;
+            width: 40%;
         }
         #noticealert {
             position: absolute;
@@ -438,7 +467,7 @@
     </style>
     <title>Mileage managerment</title>
 </head>
-<body>
+<body ondragstart="return false" onselectstart="return false"> <!-- 드래그 캔슬 -->
     <div id='container'>
         <p id="title">Membership mileage</p>
         <p id="subtitle">이번에 적립될 금액</p>
@@ -473,7 +502,12 @@
         <div id="user" class="c_user" style="display: none;">
             <div class="user_tel"></div>
             <div class="user_count"></div>
-            <div class="user_detail"></div>
+            <div class="user_detail">
+                <div id="detailGroupProto" class="detailGroup">
+                    <div class="detail_date"></div>
+                    <div class="detail_price"></div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="noticealert">notice</div>
