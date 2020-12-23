@@ -158,15 +158,20 @@
                 userform.appendTo('#admin_contents').css('display', 'block')[0].id=tel;
                 $(`#${tel}`).children('.user_tel').text(tel);
                 let count = 0;
+                let sum = 0;
                 for(i in mileage[tel]) {
                     let detailform = $('#detailGroupProto').clone();
                     detailform.appendTo($(`#${tel}`).children('.user_detail')).css('display', 'block')[0].id=`${tel}-${count}`;
                     let detail_date = $(`#${tel}`).children('.user_detail').children(`#${tel}-${count}`).children('.detail_date');
                     let detail_price = $(`#${tel}`).children('.user_detail').children(`#${tel}-${count}`).children('.detail_price');
-                    detail_date.html(detail_date.html() + `${i}<br>`);
-                    detail_price.html(detail_price.html() + `${mileage[tel][i]}<br>`)
+                    detail_date.html(`${i}`);
+                    detail_price.html(`${insertComma(mileage[tel][i])}`)
+                    sum += mileage[tel][i];
                     count++;
                 }
+                $('#detailGroupProto').clone().appendTo($(`#${tel}`).children('.user_detail')).css('padding-top', '10px').css('border-top', '2px solid #00000070').css('display', 'block')[0].id=`${tel}Sum`;
+                $(`#${tel}`).children('.user_detail').children(`#${tel}Sum`).children('.detail_date').html('합계');
+                $(`#${tel}`).children('.user_detail').children(`#${tel}Sum`).children('.detail_price').html(insertComma(sum));
                 $(`#${tel}`).children('.user_count').text(count);
             }
         }
@@ -398,6 +403,24 @@
             text-align: center;
             overflow-y: scroll;
         }
+        #userTitle {
+            font-size: 22px;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid black;
+        }
+        #userTelCol {
+            width: 60%;
+            margin-right: 5px;
+            display: inline-block;
+            text-align: center;
+        }
+        #userCountCol {
+            width: 35%;
+            display: inline-block;
+            text-align: center;
+        }
         .c_user {
             width: 100%;
             margin-bottom: 10px;
@@ -406,7 +429,7 @@
             display: inline-block;
             background-color: #fff;
             padding-top: 10px;
-            width: 80%;
+            width: 60%;
             height: 30px;
             margin-right: 5px;
             border-radius: 10px;
@@ -415,7 +438,7 @@
             display: inline-block;
             background-color: white;
             padding-top: 10px;
-            width: 15%;
+            width: 35%;
             height: 30px;
             border-radius: 10px;
         }
@@ -423,7 +446,7 @@
             display: none;
             background-color: #f0f0f0;
             border: 3px solid white;
-            width: 488px;
+            width: 497px;
             border-radius: 10px;
             padding: 10px;
             margin-top: 5px;
@@ -431,16 +454,30 @@
         .detailGroup {
             display: none;
             padding: 3px;
-            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        #detailGroupTitle {
+            text-align: center;
+            padding: 5px;
+            border-bottom: 2px solid #00000070;
+        }
+        #detailGroupDate {
+            display: inline-block;
+            width: 50%;
+            margin-right: 80px;
+        }
+        #detailGroupPrice {
+            display: inline-block;
+            width: 25%;
         }
         .detail_date {
             display: inline-block;
-            width: 40%;
-            margin-right: 10px;
+            width: 50%;
+            margin-right: 80px;
         }
         .detail_price {
             display: inline-block;
-            width: 40%;
+            width: 25%;
         }
         #noticealert {
             position: absolute;
@@ -497,12 +534,20 @@
                 <p id="admin_comment">*전화번호를 클릭하면 상세조회할 수 있습니다.</p>
             </div>
             <div id="admin_contents">
+                <div id="userTitle">
+                    <div id="userTelCol">회원전화번호</div>
+                    <div id="userCountCol">적립횟수</div>
+                </div>
             </div>
         </div>
         <div id="user" class="c_user" style="display: none;">
             <div class="user_tel"></div>
             <div class="user_count"></div>
             <div class="user_detail">
+                <div id="detailGroupTitle">
+                    <div id="detailGroupDate">적립일</div>
+                    <div id="detailGroupPrice">금액</div>
+                </div>
                 <div id="detailGroupProto" class="detailGroup">
                     <div class="detail_date"></div>
                     <div class="detail_price"></div>
