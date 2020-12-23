@@ -120,11 +120,28 @@
         }
         // ========================================================================
         // 관리자모드 실행 메소드
+
+        // .user_tel div에 mouseover를 적용할때 오류에 두 번 부딫혔는데,
+        // 1. .user_tel은 이 메소드가 실행된 후에 생겨나는 개체이므로 $(document).ready에 mouseover를 추가하면 적용이 안됨.
+        // 순서가 다름.. ready->mouseover추가->이 div 추가
+        // 2. 원래 #user_tel이었음. 맨 위에 하나만 적용되서 .user_tel로 바꿈
         // ========================================================================
         function showAdmin() {
             $('#admin_background').css('display', 'block');
             divresize('#admin', '0.8', '0.8');
             loadData();
+            $('.user_tel, .user_count').mouseover(function() {
+                $(this).parent().children().css('background-color', '#a6d0e025');
+            });
+            $('.user_tel, .user_count').mouseleave(function() {
+                $(this).parent().children().css('background-color', 'white');
+            });
+            $('.user_tel').click(function() {
+                if($(this).parent().children('.user_detail').css('display') == 'inline-block')
+                    $(this).parent().children('.user_detail').css('display', 'none');
+                else
+                    $(this).parent().children('.user_detail').css('display', 'inline-block');
+            });
         }
         // ========================================================================
         // 사용자 데이터 불러오기
@@ -132,11 +149,14 @@
         function loadData() {
             for(tel in mileage) {
                 let userform = $('#user').clone();
-                userform.appendTo('#admin_contents').css('display', 'block')[0].id=tel;
-                $(`#${tel}`).children('#user_tel').text(tel);
+                let form = userform.appendTo('#admin_contents').css('display', 'block')[0].id=tel;
+                $(`#${tel}`).children('.user_tel').text(tel);
                 let count = 0;
-                for(i in mileage[tel]) {count++}
-                $(`#${tel}`).children('#user_count').text(count);
+                for(i in mileage[tel]) {
+                    $(`#${tel}`).children('.user_detail').html('test');
+                    count++;
+                }
+                $(`#${tel}`).children('.user_count').text(count);
             }
         }
         // ========================================================================
@@ -360,29 +380,38 @@
         }
         #admin_contents {
             margin: 20px;
+            height: 80%;
             text-align: center;
+            overflow-y: scroll;
         }
         .c_user {
             width: 100%;
-            height: 30px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-        #user_tel {
+        .user_tel {
             display: inline-block;
             background-color: #fff;
             padding-top: 10px;
             width: 80%;
-            height: 100%;
+            height: 30px;
             margin-right: 5px;
             border-radius: 10px;
         }
-        #user_count {
+        .user_count {
             display: inline-block;
             background-color: white;
             padding-top: 10px;
             width: 15%;
-            height: 100%;
+            height: 30px;
             border-radius: 10px;
+        }
+        .user_detail {
+            display: none;
+            width: 97%;
+            height: 40px;
+            border-radius: 10px;
+            padding-top: 10px;
+            margin-top: 10px;
         }
         #noticealert {
             position: absolute;
@@ -392,6 +421,7 @@
             border-radius: 10px;
             padding: 5px;
             cursor: default;
+            z-index: -1;
         }
         #notice {
             position: absolute;
@@ -441,10 +471,9 @@
             </div>
         </div>
         <div id="user" class="c_user" style="display: none;">
-            <div id="user_tel">
-            </div>
-            <div id="user_count">
-            </div>
+            <div class="user_tel"></div>
+            <div class="user_count"></div>
+            <div class="user_detail"></div>
         </div>
     </div>
     <div id="noticealert">notice</div>
